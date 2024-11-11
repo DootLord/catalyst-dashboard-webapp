@@ -8,6 +8,7 @@ const products = [
 ]
 
 function App() {
+    //TODO: Figure out how to make a component use the setFood function so food can be updated globally
     const [food, setFood] = useState(products);
 
     const listItems = products.map((product) => {
@@ -32,7 +33,7 @@ function MyButton() {
 
     function handleClick() {
         setCount(count + 1);
-        setFood([...food, { title: input }]);
+        // setFood([...food, { title: input }]);
     }
 
     return (
