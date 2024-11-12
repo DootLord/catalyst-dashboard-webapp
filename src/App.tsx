@@ -1,50 +1,70 @@
 import './App.scss'
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 import { useState } from 'react'
-
-const products = [
-    { title: "egg" },
-    { title: "cheese" },
-    { title: "milk" },
-]
+import MuiButton from './components/test-components/mui-button';
+import MuiSlider from './components/test-components/mui-slider';
+import MuiSubmitButton from './components/test-components/mui-submit-button';
 
 function App() {
-    //TODO: Figure out how to make a component use the setFood function so food can be updated globally
-    const [food, setFood] = useState(products);
+    const [clickCount, setClickCount] = useState(0)
+    const [buttonClickValue, setButtonClickValue] = useState(50)
+    const [serverCount, setServerCount] = useState(0)
 
-    const listItems = products.map((product) => {
-        return <li key={product.title.toLocaleLowerCase()}>{product.title}</li>
-    });
-
-    const list = <div><ul>{listItems}</ul> <MyButton /></div>;
-
-    return list;
-}
-
-function MyButton() {
-    // Count the number of times the button is clicked
-    const [count, setCount] = useState(0);
-    // Store the input value
-    const [input, setInput] = useState("");
-
-
-    function inputChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setInput(e.target.value);
+    function buttonClickHandler(clickAmount: number = 1) {
+        setClickCount(clickCount + clickAmount);
     }
 
-    function handleClick() {
-        setCount(count + 1);
-        // setFood([...food, { title: input }]);
+    function sliderChangeHandler(newValue: number) {
+        setButtonClickValue(newValue);
     }
+
+    async function submitButtonClickHandler() {
+        const fetchRequest = fetch("/api/count", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ value: clickCount }),
+        });
+
+        let fetchResponse = await fetchRequest;
+
+        if (fetchResponse.ok) {
+            setClickCount(0);
+            getServerCount();
+        }
+
+
+    }
+
+    async function getServerCount() {
+        const fetchRequest = fetch("/api/count");
+        const fetchResponse = await fetchRequest;
+
+        if (fetchResponse.ok) {
+            const data = await fetchResponse.json();
+            setServerCount(data.value);
+        }
+    }
+
+    setInterval(getServerCount, 1000);
 
     return (
         <div>
-            <input type="text" onChange={inputChange}></input>
-            <button onClick={handleClick}>
-                Clicked {count} times
-            </button>
-        </div>
+            <h1>Click Count: {clickCount}</h1>
+            <h1>Server Count: {serverCount}</h1>
+            <MuiButton clickEvent={buttonClickHandler} incrementValue={1} />
+            <MuiButton clickEvent={buttonClickHandler} incrementValue={5} />
+            <MuiButton clickEvent={buttonClickHandler} incrementValue={buttonClickValue} />
+            <MuiSubmitButton clickEvent={submitButtonClickHandler} text="Submit" />
 
-    );
+
+            <MuiSlider changeEvent={sliderChangeHandler} />
+        </div>
+    )
 }
 
 export default App
