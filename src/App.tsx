@@ -7,8 +7,10 @@ import { useState } from 'react'
 import MuiButton from './components/test-components/mui-button';
 import MuiSlider from './components/test-components/mui-slider';
 import MuiSubmitButton from './components/test-components/mui-submit-button';
+import MyChart from './components/test-components/my-chart';
 
 function App() {
+    
     const [clickCount, setClickCount] = useState(0)
     const [buttonClickValue, setButtonClickValue] = useState(50)
     const [serverCount, setServerCount] = useState(0)
@@ -54,15 +56,9 @@ function App() {
 
     return (
         <div>
-            <h1>Click Count: {clickCount}</h1>
-            <h1>Server Count: {serverCount}</h1>
-            <MuiButton clickEvent={buttonClickHandler} incrementValue={1} />
-            <MuiButton clickEvent={buttonClickHandler} incrementValue={5} />
-            <MuiButton clickEvent={buttonClickHandler} incrementValue={buttonClickValue} />
-            <MuiSubmitButton clickEvent={submitButtonClickHandler} text="Submit" />
 
 
-            <MuiSlider changeEvent={sliderChangeHandler} />
+            <MyChart />
         </div>
     )
 }
