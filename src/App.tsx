@@ -4,13 +4,11 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { useState } from 'react'
-import MuiButton from './components/test-components/mui-button';
-import MuiSlider from './components/test-components/mui-slider';
-import MuiSubmitButton from './components/test-components/mui-submit-button';
-import MyChart from './components/test-components/my-chart';
+
+import { Box, Grid2 } from '@mui/material';
 
 function App() {
-    
+
     const [clickCount, setClickCount] = useState(0)
     const [buttonClickValue, setButtonClickValue] = useState(50)
     const [serverCount, setServerCount] = useState(0)
@@ -55,11 +53,17 @@ function App() {
     setInterval(getServerCount, 1000);
 
     return (
-        <div>
+        <Box sx={{ flexGrow: 1 }}>
+            <Grid2 container spacing={2}>
+                <Grid2 size={8}>
+                    <span> Size 8 </span>
+                </Grid2>
+                <Grid2 size={4}>
+                    <span> Size 4 </span>
+                </Grid2>
+            </Grid2>
+        </Box>
 
-
-            <MyChart />
-        </div>
     )
 }
 
